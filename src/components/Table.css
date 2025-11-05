@@ -1,0 +1,90 @@
+/* Hide default arrow icons in Prev/Next */
+.p-paginator .p-paginator-prev .p-icon,
+.p-paginator .p-paginator-next .p-icon,
+.p-paginator .p-paginator-prev .pi,
+.p-paginator .p-paginator-next .pi {
+  display: none !important;
+}
+
+/* Add text for Prev/Next buttons */
+.p-paginator .p-paginator-prev::after {
+  content: "Previous";
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #2563eb;
+}
+
+.p-paginator .p-paginator-next::after {
+  content: "Next";
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #2563eb;
+}
+
+/* Style Prev/Next buttons */
+.p-paginator .p-paginator-prev,
+.p-paginator .p-paginator-next {
+  border-radius: 6px;
+  border: 1px solid #e5e7eb;
+  background-color: #fff;
+  margin: 0 6px;
+  height: 36px;
+  min-width: 80px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* Hover effect for Prev/Next */
+.p-paginator .p-paginator-prev:hover::after,
+.p-paginator .p-paginator-next:hover::after {
+  color: #1e40af;
+}
+
+/* Disabled state */
+.p-paginator .p-paginator-prev.p-disabled,
+.p-paginator .p-paginator-next.p-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ✅ Make table layout stable */
+.p-datatable-table {
+  table-layout: fixed !important; /* prevents resizing based on content */
+  width: 100% !important;
+}
+
+/* ✅ Ensure each column has equal/fixed width */
+.p-datatable .p-datatable-thead > tr > th,
+.p-datatable .p-datatable-tbody > tr > td {
+  white-space: nowrap;       /* prevents text wrapping */
+  overflow: hidden;          /* hides overflowed content */
+  text-overflow: ellipsis;   /* adds "..." for long content */
+  padding: 0.75rem 1rem;     /* consistent spacing */
+  max-width: 200px;          /* adjust based on your layout */
+}
+
+/* ✅ Keep row height consistent even for shorter data */
+.p-datatable .p-datatable-tbody > tr {
+  height: 48px; /* fixed row height for consistency */
+  vertical-align: middle;
+}
+
+/* ✅ Optional: prevent jump due to scrollbar */
+.p-datatable-wrapper {
+  min-height: 500px; /* ensures the table area stays the same */
+}
+
+/* ✅ Optional: smooth page change transition */
+.p-datatable .p-datatable-tbody {
+  transition: all 0.2s ease-in-out;
+}
+.selected-info {
+  margin-top: 1rem;
+  font-size: 0.95rem;
+  color: #1e3a8a;
+  font-weight: 500;
+  margin-bottom: 10px;
+}

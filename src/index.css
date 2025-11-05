@@ -1,0 +1,25 @@
+/* Center the paginator and give spacing */
+.p-paginator {
+  justify-content: center !important;
+  background-color: transparent;
+  border: none;
+  padding-top: 10px;
+}
+
+/* Style the active page */
+.p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+  background-color: #1d4ed8; /* Blue like in your screenshot */
+  color: white;
+  border-radius: 6px;
+}
+
+/* Round the other page buttons */
+.p-paginator .p-paginator-page {
+  border-radius: 6px;
+}
+
+/* Make Previous/Next text bold */
+.p-paginator .p-paginator-prev,
+.p-paginator .p-paginator-next {
+  font-weight: 600;
+}

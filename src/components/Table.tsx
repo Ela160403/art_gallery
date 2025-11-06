@@ -123,7 +123,7 @@ function Table() {
     overlayPanelRef.current?.toggle(event);
   };
 
-  // Fixed handler for InputNumber value change
+  // Fixed handler for PrimeReact InputNumber
   const handleInputNumberChange = (e: { value: number | null }) => {
     setSelectCount(e.value);
   };

@@ -71,78 +71,47 @@ function Table() {
     localStorage.setItem("selectedArtworks", JSON.stringify(updatedSelection));
   };
 
-  const handleCustomRowSelection = async (): Promise<void> => {
-    if (!selectCount || selectCount <= 0) {
-      alert("Please enter a valid number");
-      return;
+const handleCustomRowSelection = async (): Promise<void> => {
+  if (!selectCount || selectCount <= 0) {
+    alert("Please enter a valid number");
+    return;
+  }
+
+  setIsLoading(true);
+
+  try {
+    const availableArtworks = data.filter(artwork => 
+      !selectedArtworks.some(selected => selected.id === artwork.id)
+    );
+    const canSelectFromCurrentPage = Math.min(selectCount, availableArtworks.length);
+    
+    if (canSelectFromCurrentPage > 0) {
+      const artworksToAdd = availableArtworks.slice(0, canSelectFromCurrentPage);
+      const updatedSelections = [...selectedArtworks, ...artworksToAdd];
+      
+      setSelectedArtworks(updatedSelections);
+      localStorage.setItem("selectedArtworks", JSON.stringify(updatedSelections));
     }
 
-    setIsLoading(true);
-
-    try {
-      const newSelectedArtworks: Artwork[] = [];
-      let currentPage = 1;
-      let collected = 0;
-
-      // Start with currently selected artworks
-      const currentSelection = new Map<number, Artwork>();
-      selectedArtworks.forEach((artwork) => {
-        currentSelection.set(artwork.id, artwork);
-      });
-
-      while (collected < selectCount) {
-        const response = await fetch(
-          `https://api.artic.edu/api/v1/artworks?page=${currentPage}`
-        );
-        const result = await response.json();
-
-        if (!Array.isArray(result.data)) {
-          break;
-        }
-
-        const needed = selectCount - collected;
-        const artworksToAdd = result.data.slice(0, needed);
-
-        for (const artwork of artworksToAdd) {
-          if (!currentSelection.has(artwork.id)) {
-            currentSelection.set(artwork.id, artwork);
-            newSelectedArtworks.push(artwork);
-            collected++;
-
-            if (collected >= selectCount) break;
-          }
-        }
-
-        // Break if we've reached the end or can't get more data
-        if (artworksToAdd.length === 0 || result.data.length < rowsPerPage) {
-          break;
-        }
-
-        currentPage++;
-
-        // Safety break to prevent infinite loops
-        if (currentPage > 1000) break;
-      }
-
-      // Convert Map values to array and update state
-      const finalSelection = Array.from(currentSelection.values());
-      setSelectedArtworks(finalSelection);
-      localStorage.setItem("selectedArtworks", JSON.stringify(finalSelection));
-
-      setSelectCount(null);
-      overlayPanelRef.current?.hide();
-
-      if (collected < selectCount) {
-        alert(`Only ${collected} artworks were available to select.`);
-      }
-    } catch (error) {
-      console.error("Error during custom row selection:", error);
-      alert("An error occurred while selecting artworks.");
-    } finally {
-      setIsLoading(false);
+    if (selectCount > availableArtworks.length) {
+      const remainingNeeded = selectCount - availableArtworks.length;
+      console.log(`Selected ${canSelectFromCurrentPage} artworks from this page. 
+      Navigate to other pages and use the custom selection again to select more artworks. 
+      You need ${remainingNeeded} more.`);
+    } else {
+      console.log(`Successfully selected ${canSelectFromCurrentPage} artworks`);
     }
-  };
 
+    setSelectCount(null);
+    overlayPanelRef.current?.hide();
+
+  } catch (error) {
+    console.error("Error during custom row selection:", error);
+    alert("An error occurred while selecting artworks.");
+  } finally {
+    setIsLoading(false);
+  }
+};
   const onPageChange = (e: any) => {
     setCurPage(e.page + 1);
   };

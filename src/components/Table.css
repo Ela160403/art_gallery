@@ -50,41 +50,155 @@
   cursor: not-allowed;
 }
 
-/* ✅ Make table layout stable */
+/* Make table layout stable */
 .p-datatable-table {
-  table-layout: fixed !important; /* prevents resizing based on content */
+  table-layout: fixed !important;
   width: 100% !important;
 }
 
-/* ✅ Ensure each column has equal/fixed width */
+/* Ensure each column has equal/fixed width */
 .p-datatable .p-datatable-thead > tr > th,
 .p-datatable .p-datatable-tbody > tr > td {
-  white-space: nowrap;       /* prevents text wrapping */
-  overflow: hidden;          /* hides overflowed content */
-  text-overflow: ellipsis;   /* adds "..." for long content */
-  padding: 0.75rem 1rem;     /* consistent spacing */
-  max-width: 200px;          /* adjust based on your layout */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0.75rem 1rem;
+  max-width: 200px;
 }
 
-/* ✅ Keep row height consistent even for shorter data */
+/* Keep row height consistent even for shorter data */
 .p-datatable .p-datatable-tbody > tr {
-  height: 48px; /* fixed row height for consistency */
+  height: 48px;
   vertical-align: middle;
 }
 
-/* ✅ Optional: prevent jump due to scrollbar */
+/* Optional: prevent jump due to scrollbar */
 .p-datatable-wrapper {
-  min-height: 500px; /* ensures the table area stays the same */
+  min-height: 500px;
 }
 
-/* ✅ Optional: smooth page change transition */
+/* Optional: smooth page change transition */
 .p-datatable .p-datatable-tbody {
   transition: all 0.2s ease-in-out;
 }
+
 .selected-info {
   margin-top: 1rem;
   font-size: 0.95rem;
   color: #1e3a8a;
   font-weight: 500;
   margin-bottom: 10px;
+}
+
+.selection-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+/* Custom selection panel styling - UPDATED */
+.custom-selection-panel {
+  min-width: 280px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 0;
+}
+
+.custom-selection-content {
+  padding: 1rem;
+}
+
+.custom-selection-content h4 {
+  margin: 0 0 0.5rem 0;
+  color: #1f2937;
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.custom-selection-content p {
+  margin: 0 0 1rem 0;
+  color: #6b7280;
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+/* Row layout for input and button - UPDATED */
+.selection-input-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+/* Simple input without buttons - UPDATED */
+.simple-input {
+  flex: 1;
+}
+
+.simple-input .p-inputnumber {
+  width: 100%;
+}
+
+.simple-input .p-inputnumber-input {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  text-align: left;
+}
+
+.simple-input .p-inputnumber-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Select button styling - UPDATED */
+.selection-input-row .p-button {
+  background: #3b82f6;
+  border: 1px solid #3b82f6;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  min-width: 80px;
+  transition: all 0.2s ease;
+}
+
+.selection-input-row .p-button:hover {
+  background: #2563eb;
+  border-color: #2563eb;
+}
+
+.selection-input-row .p-button:disabled {
+  background: #9ca3af;
+  border-color: #9ca3af;
+  cursor: not-allowed;
+}
+
+/* Remove all button styles from input number */
+.custom-selection-panel .p-inputnumber-buttons-stacked,
+.custom-selection-panel .p-inputnumber-buttons-vertical,
+.custom-selection-panel .p-inputnumber-buttons-horizontal {
+  display: none !important;
+}
+
+.custom-selection-panel .p-inputnumber .p-inputnumber-input {
+  border-radius: 6px !important;
+  border: 1px solid #d1d5db !important;
+}
+
+/* Ensure the overlay panel has proper z-index */
+.p-overlaypanel {
+  z-index: 1000;
+}
+
+/* Remove any button container if present */
+.p-inputnumber-button-group {
+  display: none !important;
 }

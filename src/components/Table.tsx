@@ -71,47 +71,48 @@ function Table() {
     localStorage.setItem("selectedArtworks", JSON.stringify(updatedSelection));
   };
 
-const handleCustomRowSelection = async (): Promise<void> => {
-  if (!selectCount || selectCount <= 0) {
-    alert("Please enter a valid number");
-    return;
-  }
+  const handleCustomRowSelection = async (): Promise<void> => {
+    if (!selectCount || selectCount <= 0) {
+      alert("Please enter a valid number");
+      return;
+    }
 
-  setIsLoading(true);
+    setIsLoading(true);
 
-  try {
-    const availableArtworks = data.filter(artwork => 
-      !selectedArtworks.some(selected => selected.id === artwork.id)
-    );
-    const canSelectFromCurrentPage = Math.min(selectCount, availableArtworks.length);
-    
-    if (canSelectFromCurrentPage > 0) {
-      const artworksToAdd = availableArtworks.slice(0, canSelectFromCurrentPage);
-      const updatedSelections = [...selectedArtworks, ...artworksToAdd];
+    try {
+      const availableArtworks = data.filter(artwork => 
+        !selectedArtworks.some(selected => selected.id === artwork.id)
+      );
+      const canSelectFromCurrentPage = Math.min(selectCount, availableArtworks.length);
       
-      setSelectedArtworks(updatedSelections);
-      localStorage.setItem("selectedArtworks", JSON.stringify(updatedSelections));
+      if (canSelectFromCurrentPage > 0) {
+        const artworksToAdd = availableArtworks.slice(0, canSelectFromCurrentPage);
+        const updatedSelections = [...selectedArtworks, ...artworksToAdd];
+        
+        setSelectedArtworks(updatedSelections);
+        localStorage.setItem("selectedArtworks", JSON.stringify(updatedSelections));
+      }
+
+      if (selectCount > availableArtworks.length) {
+        const remainingNeeded = selectCount - availableArtworks.length;
+        alert(`Selected ${canSelectFromCurrentPage} artworks from this page. 
+        Navigate to other pages and use the custom selection again to select more artworks. 
+        You need ${remainingNeeded} more.`);
+      } else {
+        alert(`Successfully selected ${canSelectFromCurrentPage} artworks`);
+      }
+
+      setSelectCount(null);
+      overlayPanelRef.current?.hide();
+
+    } catch (error) {
+      console.error("Error during custom row selection:", error);
+      alert("An error occurred while selecting artworks.");
+    } finally {
+      setIsLoading(false);
     }
+  };
 
-    if (selectCount > availableArtworks.length) {
-      const remainingNeeded = selectCount - availableArtworks.length;
-      console.log(`Selected ${canSelectFromCurrentPage} artworks from this page. 
-      Navigate to other pages and use the custom selection again to select more artworks. 
-      You need ${remainingNeeded} more.`);
-    } else {
-      console.log(`Successfully selected ${canSelectFromCurrentPage} artworks`);
-    }
-
-    setSelectCount(null);
-    overlayPanelRef.current?.hide();
-
-  } catch (error) {
-    console.error("Error during custom row selection:", error);
-    alert("An error occurred while selecting artworks.");
-  } finally {
-    setIsLoading(false);
-  }
-};
   const onPageChange = (e: any) => {
     setCurPage(e.page + 1);
   };
@@ -120,6 +121,11 @@ const handleCustomRowSelection = async (): Promise<void> => {
 
   const toggleOverlay = (event: React.MouseEvent) => {
     overlayPanelRef.current?.toggle(event);
+  };
+
+  // Fixed handler for InputNumber value change
+  const handleInputNumberChange = (e: { value: number | null }) => {
+    setSelectCount(e.value);
   };
 
   return (
@@ -156,11 +162,11 @@ const handleCustomRowSelection = async (): Promise<void> => {
                   <div className="simple-input">
                     <InputNumber
                       value={selectCount}
-                      onValueChange={(e) => setSelectCount(e.value)}
+                      onValueChange={handleInputNumberChange}
                       placeholder="Enter number"
                       min={1}
                       max={1000}
-                      showButtons={false} // This removes all buttons
+                      showButtons={false}
                       style={{ width: "100%" }}
                       inputStyle={{ width: "100%" }}
                     />

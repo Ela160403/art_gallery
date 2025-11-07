@@ -19,6 +19,12 @@ interface Artwork {
   date_end: number | null;
 }
 
+// Define the correct type for InputNumber change event
+interface InputNumberChangeEvent {
+  originalEvent: React.SyntheticEvent;
+  value: number | null;
+}
+
 function Table() {
   const [data, setData] = useState<Artwork[]>([]);
   const [selectedArtworks, setSelectedArtworks] = useState<Artwork[]>([]);
@@ -123,10 +129,15 @@ function Table() {
     overlayPanelRef.current?.toggle(event);
   };
 
-  // Fixed handler for PrimeReact InputNumber
-  const handleInputNumberChange = (e: { value: number | null }) => {
+  // Fixed handler for PrimeReact InputNumber - using the correct approach
+  const handleInputNumberChange = (e: InputNumberChangeEvent) => {
     setSelectCount(e.value);
   };
+
+  // Alternative approach - using any type if the above doesn't work
+  // const handleInputNumberChange = (e: any) => {
+  //   setSelectCount(e.value);
+  // };
 
   return (
     <div className="card">
